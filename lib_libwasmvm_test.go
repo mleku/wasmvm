@@ -12,8 +12,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/CosmWasm/wasmvm/v2/internal/api"
-	"github.com/CosmWasm/wasmvm/v2/types"
+	"wasmvm.mleku.dev/internal/api"
+	"wasmvm.mleku.dev/types"
 )
 
 const (
@@ -159,7 +159,8 @@ func TestHappyPath(t *testing.T) {
 	store.SetGasMeter(gasMeter2)
 	env = api.MockEnv()
 	info = api.MockInfo("fred", nil)
-	h, _, err := vm.Execute(checksum, env, info, []byte(`{"release":{}}`), store, *goapi, querier, gasMeter2, TESTING_GAS_LIMIT, deserCost)
+	h, _, err := vm.Execute(checksum, env, info, []byte(`{"release":{}}`), store, *goapi, querier, gasMeter2, TESTING_GAS_LIMIT,
+		deserCost)
 	require.NoError(t, err)
 	require.NotNil(t, h.Ok)
 	hres := h.Ok
@@ -192,7 +193,8 @@ func TestEnv(t *testing.T) {
 	// instantiate
 	env := api.MockEnv()
 	info := api.MockInfo("creator", nil)
-	i, _, err := vm.Instantiate(checksum, env, info, []byte(`{}`), store, *goapi, querier, gasMeter1, TESTING_GAS_LIMIT, deserCost)
+	i, _, err := vm.Instantiate(checksum, env, info, []byte(`{}`), store, *goapi, querier, gasMeter1, TESTING_GAS_LIMIT,
+		deserCost)
 	require.NoError(t, err)
 	require.NotNil(t, i.Ok)
 	ires := i.Ok
@@ -379,7 +381,8 @@ func TestLongPayloadDeserialization(t *testing.T) {
 	validPayload := make([]byte, 128*1024)
 	validPayloadJSON, err := json.Marshal(validPayload)
 	require.NoError(t, err)
-	resultJson := []byte(fmt.Sprintf(`{"ok":{"messages":[{"id":0,"msg":{"bank":{"send":{"to_address":"bob","amount":[{"denom":"ATOM","amount":"250"}]}}},"payload":%s,"reply_on":"never"}],"data":"8Auq","attributes":[],"events":[]}}`, validPayloadJSON))
+	resultJson := []byte(fmt.Sprintf(`{"ok":{"messages":[{"id":0,"msg":{"bank":{"send":{"to_address":"bob","amount":[{"denom":"ATOM","amount":"250"}]}}},"payload":%s,"reply_on":"never"}],"data":"8Auq","attributes":[],"events":[]}}`,
+		validPayloadJSON))
 
 	// Test that a valid payload can be deserialized
 	var result types.ContractResult
@@ -391,7 +394,8 @@ func TestLongPayloadDeserialization(t *testing.T) {
 	invalidPayload := make([]byte, 128*1024+1)
 	invalidPayloadJSON, err := json.Marshal(invalidPayload)
 	require.NoError(t, err)
-	resultJson = []byte(fmt.Sprintf(`{"ok":{"messages":[{"id":0,"msg":{"bank":{"send":{"to_address":"bob","amount":[{"denom":"ATOM","amount":"250"}]}}},"payload":%s,"reply_on":"never"}],"attributes":[],"events":[]}}`, invalidPayloadJSON))
+	resultJson = []byte(fmt.Sprintf(`{"ok":{"messages":[{"id":0,"msg":{"bank":{"send":{"to_address":"bob","amount":[{"denom":"ATOM","amount":"250"}]}}},"payload":%s,"reply_on":"never"}],"attributes":[],"events":[]}}`,
+		invalidPayloadJSON))
 
 	// Test that an invalid payload cannot be deserialized
 	err = DeserializeResponse(math.MaxUint64, deserCost, &gasReport, resultJson, &result)

@@ -1,4 +1,4 @@
-module github.com/CosmWasm/wasmvm/v2
+module wasmvm.mleku.dev
 
 go 1.21
 

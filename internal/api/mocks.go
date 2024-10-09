@@ -11,8 +11,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/CosmWasm/wasmvm/v2/internal/api/testdb"
-	"github.com/CosmWasm/wasmvm/v2/types"
+	"wasmvm.mleku.dev/internal/api/testdb"
+	"wasmvm.mleku.dev/types"
 )
 
 /** helper constructors **/
@@ -536,7 +536,7 @@ func (q ReflectCustom) Query(request json.RawMessage) ([]byte, error) {
 	return json.Marshal(resp)
 }
 
-//************ test code for mocks *************************//
+// ************ test code for mocks *************************//
 
 func TestBankQuerierAllBalances(t *testing.T) {
 	addr := "foobar"

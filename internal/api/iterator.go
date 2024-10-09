@@ -5,7 +5,7 @@ import (
 	"math"
 	"sync"
 
-	"github.com/CosmWasm/wasmvm/v2/types"
+	"wasmvm.mleku.dev/types"
 )
 
 // frame stores all Iterators for one contract call
